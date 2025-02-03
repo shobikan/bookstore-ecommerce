@@ -1,29 +1,21 @@
-package org.bookstoreecommerce.entity;
+package org.bookstoreecommerce.DTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bookstoreecommerce.enums.BookCategory;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Book {
-    @Id
-    private String isbn;  // ISBN as the primary key
+public class BookDTO {
+    private String isbn;
     private String title;
     private String author;
     private double price;
     private int quantity;
-
-    @Enumerated(EnumType.STRING)
     private BookCategory category;
 
 }
