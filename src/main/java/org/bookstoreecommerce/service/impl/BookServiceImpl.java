@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDTO addBook(BookDTO bookDTO) {
         if (bookRepository.existsById(bookDTO.getIsbn())) {
-            return null;
+            throw new RuntimeException("Book already exists with ISBN " + bookDTO.getIsbn());
         }
         Book book = Book.builder()
                 .isbn(bookDTO.getIsbn())
