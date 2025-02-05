@@ -49,7 +49,7 @@ public class User implements UserDetails {
     @Embedded
     private Address address;
 
-    private Integer phoneNo;
+    private String phoneNo;
 
 
     @Override
