@@ -25,7 +25,7 @@ private final AuthenticationProvider authenticationProvider;
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login").permitAll()
+                        .requestMatchers("/api/v1/auth").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
