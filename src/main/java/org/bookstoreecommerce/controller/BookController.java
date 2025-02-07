@@ -2,6 +2,7 @@ package org.bookstoreecommerce.controller;
 
 import org.bookstoreecommerce.DTO.BookDTO;
 import org.bookstoreecommerce.service.BookService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,50 +25,50 @@ public class BookController {
 
     @GetMapping("/{isbn}")
     @PreAuthorize("isAuthenticated()")
-    public BookDTO getBookByIsbn(@PathVariable("isbn") String isbn) {
-        return bookService.getBookByIsbn(isbn);
+    public ResponseEntity<?> getBookByIsbn(@PathVariable("isbn") String isbn) {
+        return ResponseEntity.ok(bookService.getBookByIsbn(isbn));
     }
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
-    public BookDTO addBook(@RequestBody BookDTO bookDTO) {
-        return bookService.addBook(bookDTO);
+    public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO) {
+        return ResponseEntity.ok(bookService.addBook(bookDTO));
     }
 
     @PutMapping("/update/{isbn}")
     @PreAuthorize("hasRole('ADMIN')")
-    public BookDTO updateBook(@PathVariable("isbn") String isbn, @RequestBody BookDTO bookDTO) {
-        return bookService.updateBook(isbn, bookDTO);
+    public ResponseEntity<?> updateBook(@PathVariable("isbn") String isbn, @RequestBody BookDTO bookDTO) {
+        return ResponseEntity.ok(bookService.updateBook(isbn, bookDTO));
     }
 
     @DeleteMapping("/delete/{isbn}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String deleteBook(@PathVariable("isbn") String isbn) {
-        return bookService.deleteBook(isbn);
+    public ResponseEntity<?> deleteBook(@PathVariable("isbn") String isbn) {
+        return ResponseEntity.ok(bookService.deleteBook(isbn));
     }
 
     @GetMapping("/category/{category}")
     @PreAuthorize("isAuthenticated()")
-    public List<BookDTO> getBooksByCategory(@PathVariable("category") String category) {
-        return bookService.getBooksByCategory(category);
+    public ResponseEntity<?> getBooksByCategory(@PathVariable("category") String category) {
+        return ResponseEntity.ok(bookService.getBooksByCategory(category));
     }
 
     @GetMapping("/author/{author}")
     @PreAuthorize("isAuthenticated()")
-    public List<BookDTO> getBooksByAuthor(@PathVariable("author") String author) {
-        return bookService.getBooksByAuthor(author);
+    public ResponseEntity<?> getBooksByAuthor(@PathVariable("author") String author) {
+        return ResponseEntity.ok(bookService.getBooksByAuthor(author));
     }
 
     @GetMapping("/title/{title}")
     @PreAuthorize("isAuthenticated()")
-    public List<BookDTO> getBooksByTitle(@PathVariable("title") String title) {
-        return bookService.getBooksByTitle(title);
+    public ResponseEntity<?> getBooksByTitle(@PathVariable("title") String title) {
+        return ResponseEntity.ok(bookService.getBooksByTitle(title));
     }
 
     @GetMapping("/quantity/{isbn}")
     @PreAuthorize("isAuthenticated()")
-    public Integer getBookQuantity(@PathVariable("isbn") String isbn) {
-        return bookService.getBookQuantity(isbn);
+    public ResponseEntity<?> getBookQuantity(@PathVariable("isbn") String isbn) {
+        return ResponseEntity.ok(bookService.getBookQuantity(isbn));
     }
 
 }
