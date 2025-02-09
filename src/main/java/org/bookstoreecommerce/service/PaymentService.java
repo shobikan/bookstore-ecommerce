@@ -56,6 +56,24 @@ public class PaymentService {
                 .sessionId(session.getUrl())
                 .checkoutUrl(session.getUrl())
                 .build();
+
+    }
+
+    public Map<String, String> processPaymentAndUpdateOrder(String sessionId) throws StripeException {
+        Stripe.apiKey = stripeApiKey;
+        Session session = Session.retrieve(sessionId);
+
+        Map<String, String> paymentDetails = new HashMap<>();
+        paymentDetails.put("payment_status", session.getPaymentStatus());
+        paymentDetails.put("payment_id", session.getPaymentIntent());
+        paymentDetails.put("amount", session.getAmountTotal().toString());
+        paymentDetails.put("order_id", session.getMetadata().get("order_id"));
+
+
+        // TODO update order status
+
+
+        return paymentDetails;
     }
 
 

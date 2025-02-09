@@ -22,4 +22,10 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.createPaymentSession(paymentRequest));
     }
 
+    // for testing purposes
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirmPayment(@RequestBody String sessionId) throws StripeException {
+        return ResponseEntity.ok(paymentService.processPaymentAndUpdateOrder(sessionId));
+    }
+
 }
