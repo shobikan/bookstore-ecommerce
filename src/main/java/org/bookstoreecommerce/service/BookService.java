@@ -14,5 +14,6 @@ public interface BookService {
     List<BookDTO> getBooksByAuthor(String author);
     List<BookDTO> getBooksByTitle(String title);
     Integer getBookQuantity(String isbn);
+    void updateBookQuantity(String isbn, int quantity);
 
 }

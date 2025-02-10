@@ -97,6 +97,14 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findQuantityByIsbn(isbn);
     }
 
+    @Override
+    public void updateBookQuantity(String isbn, int quantity) {
+        Book book = bookRepository.findById(isbn).orElseThrow(() -> new RuntimeException("Book not found"));
+        int updateQuantity = book.getQuantity() - quantity;
+        book.setQuantity(updateQuantity);
+        bookRepository.save(book);
+    }
+
     private BookDTO convertToDTO(Book book) {
         return BookDTO.builder()
                 .isbn(book.getIsbn())
