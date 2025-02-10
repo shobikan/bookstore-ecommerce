@@ -1,14 +1,13 @@
 package org.bookstoreecommerce.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bookstoreecommerce.enums.BookCategory;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -25,5 +24,8 @@ public class Book {
 
     @Enumerated(EnumType.STRING)
     private BookCategory category;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderLine> orderLines;
 
 }
