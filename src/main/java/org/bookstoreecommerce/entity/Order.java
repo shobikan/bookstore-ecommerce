@@ -3,6 +3,8 @@ package org.bookstoreecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.bookstoreecommerce.enums.OrderStatus;
+import org.bookstoreecommerce.enums.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -37,13 +39,15 @@ public class Order {
     private User user;
 
     private String paymentId;
-    private String paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "shipping_address_id", nullable = false)
     @JsonManagedReference
     private ShippingDetails shippingDetails;
 
-    private String orderStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
 }
