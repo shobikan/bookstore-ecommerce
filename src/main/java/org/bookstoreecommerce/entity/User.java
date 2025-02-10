@@ -51,6 +51,9 @@ public class User implements UserDetails {
 
     private String phoneNo;
 
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
