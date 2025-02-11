@@ -5,11 +5,13 @@ import org.bookstoreecommerce.DTO.OrderRequest;
 import org.bookstoreecommerce.DTO.OrderResponse;
 import org.bookstoreecommerce.entity.Order;
 import org.bookstoreecommerce.entity.OrderLine;
+import org.bookstoreecommerce.entity.ShippingDetails;
 import org.bookstoreecommerce.entity.User;
 import org.bookstoreecommerce.enums.OrderStatus;
 import org.bookstoreecommerce.enums.PaymentStatus;
 import org.bookstoreecommerce.repository.OrderLineRepository;
 import org.bookstoreecommerce.repository.OrderRepository;
+import org.bookstoreecommerce.repository.ShippingDetailsRepository;
 import org.bookstoreecommerce.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class OrderService {
     private final OrderLineRepository orderLineRepository;
     private final BookService bookService;
     private final UserRepository userRepository;
+    private final ShippingDetailsRepository shippingDetailsRepository;
 
     public Boolean createOrder(OrderRequest orderRequest) {
         List<OrderLine> orderLines = orderRequest.getOrderLines();
@@ -43,6 +46,57 @@ public class OrderService {
             return true;
         }
         return false;
+    }
+
+    public List<OrderResponse> getAllOrders() {
+        return orderRepository.findAllOrderResponses();
+    }
+
+    public OrderResponse getOrderById(Long orderId) {
+        return orderRepository.findOrderResponseById(orderId);
+    }
+
+    public ShippingDetails getShippingDetailsByOrderId(Long orderId) {
+        return shippingDetailsRepository.findShippingDetailsByOrderId(orderId);
+    }
+
+    public List<OrderLine> getOrderLinesByOrderId(Long orderId) {
+        return orderLineRepository.findOrderLinesByOrderId(orderId);
+    }
+
+    public List<OrderResponse> getOrdersByPaymentStatus(String paymentStatus) {
+        return orderRepository.findOrderResponsesByPaymentStatus(paymentStatus);
+    }
+
+    public List<OrderResponse> getOrdersByOrderStatus(String orderStatus) {
+        return orderRepository.findOrderResponsesByOrderStatus(orderStatus);
+    }
+
+    public List<OrderResponse> getOrdersByUserId(Long userId) {
+        return orderRepository.findOrderResponsesByUserId(userId);
+    }
+
+    public Boolean updateOrderStatus(Long orderId, OrderStatus orderStatus) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        order.setOrderStatus(orderStatus);
+        orderRepository.save(order);
+        return true;
+    }
+
+    public Boolean updatePaymentDetails(Long orderId, String paymentId, PaymentStatus paymentStatus) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        order.setPaymentId(paymentId);
+        order.setPaymentStatus(paymentStatus);
+        orderRepository.save(order);
+        return true;
+    }
+
+    public Boolean deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+        orderLineRepository.deleteOrderLinesByOrderId(orderId);
+        return true;
     }
 
     private Boolean checkAvailability(List<OrderLine> orderLines) {
