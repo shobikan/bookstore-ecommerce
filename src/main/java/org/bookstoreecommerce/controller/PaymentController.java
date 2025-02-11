@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.bookstoreecommerce.DTO.PaymentRequest;
 import org.bookstoreecommerce.service.PaymentService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +19,14 @@ public class PaymentController {
 
 
     @PostMapping("/create")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> createPayment(@RequestBody PaymentRequest paymentRequest) throws StripeException {
         return ResponseEntity.ok(paymentService.createPaymentSession(paymentRequest));
     }
 
-    // for testing purposes
+
     @PostMapping("/confirm")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> confirmPayment(@RequestBody String sessionId) throws StripeException {
         return ResponseEntity.ok(paymentService.processPaymentAndUpdateOrder(sessionId));
     }

@@ -7,6 +7,7 @@ import com.stripe.param.checkout.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
 import org.bookstoreecommerce.DTO.PaymentRequest;
 import org.bookstoreecommerce.DTO.PaymentResponse;
+import org.bookstoreecommerce.enums.PaymentStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
+
+    private final OrderService orderService;
 
     @Value("${stripe.secret-key}")
     private  String stripeApiKey;
@@ -59,7 +62,7 @@ public class PaymentService {
 
     }
 
-    public Map<String, String> processPaymentAndUpdateOrder(String sessionId) throws StripeException {
+    public Boolean processPaymentAndUpdateOrder(String sessionId) throws StripeException {
         Stripe.apiKey = stripeApiKey;
         Session session = Session.retrieve(sessionId);
 
@@ -69,11 +72,13 @@ public class PaymentService {
         paymentDetails.put("amount", session.getAmountTotal().toString());
         paymentDetails.put("order_id", session.getMetadata().get("order_id"));
 
+        Long orderId = Long.parseLong(session.getMetadata().get("order_id"));
 
-        // TODO update order status
+        if (session.getPaymentStatus().equals("paid")) {
+            return orderService.updatePaymentDetails(orderId, paymentDetails.get("payment_id"), PaymentStatus.COMPLETED);
+        }
 
-
-        return paymentDetails;
+        return false;
     }
 
 
