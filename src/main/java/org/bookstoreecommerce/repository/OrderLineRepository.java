@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface OrderLineRepository extends JpaRepository<OrderLine, Long> {
     @Query("SELECT ol FROM OrderLine ol WHERE ol.order.orderId = :orderId")
-    List<OrderLine> findByOrder(Long orderId);
+    List<OrderLine> findOrderLinesByOrderId(Long orderId);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM OrderLine ol WHERE ol.order.orderId = :orderId")
-    void deleteByOrderId(Long orderId);
+    void deleteOrderLinesByOrderId(Long orderId);
 }
