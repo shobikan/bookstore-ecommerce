@@ -8,4 +8,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     @Query("SELECT c FROM Cart c WHERE c.user.userId = :userId")
     Cart findCartByUserId(Long userId);
 
+    @Query("SELECT c.cartId FROM Cart c WHERE c.user.userId = :userId")
+    Long findCartIdByUserId(Long userId);
+
 }

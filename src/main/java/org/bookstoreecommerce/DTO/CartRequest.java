@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class CartRequest {
-    private Long bookId;
-    private Long quantity;
+    private String isbn;
+    private int quantity;
 }
