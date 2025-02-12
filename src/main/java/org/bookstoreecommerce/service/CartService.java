@@ -71,7 +71,8 @@ public class CartService {
         return true;
     }
 
-    public Boolean deleteCart(Long cartId) {
+    public Boolean deleteCart(Long userId) {
+        Long cartId = cartRepository.findCartIdByUserId(userId);
         cartItemRepository.deleteCartItemsByCartId(cartId);
         cartRepository.deleteById(cartId);
         return true;
