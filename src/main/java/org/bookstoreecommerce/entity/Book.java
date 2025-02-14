@@ -31,4 +31,7 @@ public class Book {
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
 
+    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
+    private List<WishList> wishLists;
+
 }
