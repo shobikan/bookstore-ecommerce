@@ -33,7 +33,7 @@ public class EmailService {
         }
     }
 
-    private Boolean sendEmailSimple(EmailRequest request) {
+    public Boolean sendEmailSimple(EmailRequest request) {
         try {
             sendMail(request);
             return true;
