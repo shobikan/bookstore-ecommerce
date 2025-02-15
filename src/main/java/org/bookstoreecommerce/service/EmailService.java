@@ -11,6 +11,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -38,6 +40,18 @@ public class EmailService {
         } catch (MessagingException e) {
             throw new RuntimeException("Failed to send email", e);
         }
+    }
+
+    public List<EmailLog> getEmailLogs() {
+        return emailLogRepository.findAll();
+    }
+
+    public List<EmailLog> getEmailLogsByRecipient(String recipient) {
+        return emailLogRepository.findByRecipientOrderByMailLogIdDesc(recipient);
+    }
+
+    public List<EmailLog> getEmailLogsByStatus(String status) {
+        return emailLogRepository.findByStatusOrderByMailLogIdDesc(status);
     }
 
     private void sendMail (EmailRequest request) throws MessagingException {

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface EmailLogRepository extends JpaRepository<EmailLog, Long> {
     List<EmailLog> findByRecipientOrderByMailLogIdDesc(String email);
+    List<EmailLog> findByStatusOrderByMailLogIdDesc(String status);
 }
