@@ -62,6 +62,9 @@ public class User implements UserDetails {
     @JoinColumn(name = "wishlist_id")
     private WishList wishList;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private ForgotPassword forgotPassword;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
