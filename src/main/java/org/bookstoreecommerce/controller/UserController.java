@@ -1,6 +1,7 @@
 package org.bookstoreecommerce.controller;
 
 import org.bookstoreecommerce.DTO.UserDTO;
+import org.bookstoreecommerce.DTO.UserRegisterRequest;
 import org.bookstoreecommerce.DTO.UserUpdateRequest;
 import org.bookstoreecommerce.entity.Address;
 import org.bookstoreecommerce.service.UserService;
@@ -58,6 +59,12 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getUserByUsername(@PathVariable("username") String username) {
         return ResponseEntity.ok(userService.getUserByUsername(username));
+    }
+
+    @PostMapping("/creteAdmin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> createAdminByAdmin(@RequestBody UserRegisterRequest request) {
+        return ResponseEntity.ok(userService.createAdminByAdmin(request));
     }
 
 }
