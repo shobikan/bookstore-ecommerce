@@ -20,6 +20,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
+    private final UserService userService;
 
     public AuthResponse register(UserRegisterRequest request){
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -66,20 +67,7 @@ public class AuthService {
             throw new IllegalArgumentException("Admin already exists");
         }
 
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("User with email already exists");
-        }
-
-        var user = User.builder()
-                .name(request.getName())
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .phoneNo(request.getPhoneNo())
-                .role(UserRole.ADMIN)
-                .build();
-
-        userRepository.save(user);
+        var user = userService.createAdmin(request);
         var token = jwtService.generateToken(user);
         return AuthResponse.builder()
                 .token(token)

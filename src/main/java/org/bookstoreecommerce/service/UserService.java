@@ -2,10 +2,13 @@ package org.bookstoreecommerce.service;
 
 import lombok.RequiredArgsConstructor;
 import org.bookstoreecommerce.DTO.UserDTO;
+import org.bookstoreecommerce.DTO.UserRegisterRequest;
 import org.bookstoreecommerce.DTO.UserUpdateRequest;
 import org.bookstoreecommerce.entity.Address;
 import org.bookstoreecommerce.entity.User;
+import org.bookstoreecommerce.enums.UserRole;
 import org.bookstoreecommerce.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDTO addAddressForUser(Long userId, Address address) {
         var user = userRepository.findById(userId)
@@ -80,6 +84,28 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         return convertToDTO(user);
+    }
+
+    public UserDTO createAdminByAdmin(UserRegisterRequest request) {
+        return convertToDTO(createAdmin(request));
+    }
+
+    public User createAdmin(UserRegisterRequest request){
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("User with email already exists");
+        }
+
+        var user = User.builder()
+                .name(request.getName())
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNo(request.getPhoneNo())
+                .role(UserRole.ADMIN)
+                .build();
+
+        userRepository.save(user);
+        return user;
     }
 
 
