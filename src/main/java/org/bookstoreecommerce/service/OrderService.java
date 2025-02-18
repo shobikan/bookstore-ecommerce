@@ -1,6 +1,7 @@
 package org.bookstoreecommerce.service;
 
 import lombok.RequiredArgsConstructor;
+import org.bookstoreecommerce.DTO.EmailRequest;
 import org.bookstoreecommerce.DTO.OrderRequest;
 import org.bookstoreecommerce.DTO.OrderResponse;
 import org.bookstoreecommerce.entity.Order;
@@ -25,6 +26,7 @@ public class OrderService {
     private final BookService bookService;
     private final UserRepository userRepository;
     private final ShippingDetailsRepository shippingDetailsRepository;
+    private final EmailService emailService;
 
     public Boolean createOrder(OrderRequest orderRequest) {
         List<OrderLine> orderLines = orderRequest.getOrderLines();
@@ -90,6 +92,14 @@ public class OrderService {
         order.setPaymentId(paymentId);
         order.setPaymentStatus(paymentStatus);
         orderRepository.save(order);
+
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setTo(order.getUser().getEmail());
+        emailRequest.setSubject("Payment Confirmation");
+        emailRequest.setBody("Your payment has been processed successfully for order with ID: " + order.getOrderId() +
+                " . Order is now waiting for shipping");
+        emailService.sendEmailWithLog(emailRequest);
+
         return true;
     }
 
