@@ -75,6 +75,12 @@ public class ForgotPasswordService {
         userRepository.save(user);
         forgotPasswordRepository.deleteById(forgotPassword.getForgotPasswordId());
 
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setTo(email);
+        emailRequest.setSubject("Password Reset Successful");
+        emailRequest.setBody("Your password has been reset successfully.");
+        emailService.sendEmailWithLog(emailRequest);
+
         return "Password reset successfully";
     }
 
